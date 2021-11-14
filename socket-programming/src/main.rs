@@ -2,8 +2,9 @@ use std::env;
 #[macro_use]
 extern crate log;
 
-mod tcp_server;
 mod tcp_client;
+mod tcp_server;
+mod udp_server;
 
 fn main() {
     env::set_var("RUST_LOG", "debug");
@@ -31,7 +32,7 @@ fn main() {
         },
         "udp" => match role {
             "server" => {
-                // TODO: call udp server
+                udp_server::serve(address).unwrap_or_else(|e| error!("{}", e));
             }
             "client" => {
                 // TODO: call udp client
