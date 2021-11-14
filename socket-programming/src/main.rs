@@ -2,6 +2,7 @@ use std::env;
 #[macro_use]
 extern crate log;
 
+mod tcp_server;
 
 fn main() {
     env::set_var("RUST_LOG", "debug");
@@ -10,7 +11,6 @@ fn main() {
     if args.len() != 4 {
         error!("Please specify [tcp|udp] [server|client] [addr:port].");
         std::process::exit(1);
-
     }
 
     let protocol: &str = &args[1];
@@ -19,7 +19,7 @@ fn main() {
     match protocol {
         "tcp" => match role {
             "server" => {
-                // TODO: call tcp server
+                tcp_server::serve(address).unwrap_or_else(|e| error!("{}", e));
             }
             "client" => {
                 // TODO: call tcp client
@@ -27,8 +27,7 @@ fn main() {
             _ => {
                 missing_role();
             }
-
-        }
+        },
         "udp" => match role {
             "server" => {
                 // TODO: call udp server
@@ -39,8 +38,7 @@ fn main() {
             _ => {
                 missing_role();
             }
-
-        }
+        },
         _ => {
             error!("Please specify tcp or udp on the 1st argument.");
             std::process::exit(1);
