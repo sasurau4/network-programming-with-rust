@@ -5,6 +5,7 @@ extern crate log;
 mod tcp_client;
 mod tcp_server;
 mod udp_server;
+mod udp_client;
 
 fn main() {
     env::set_var("RUST_LOG", "debug");
@@ -35,7 +36,7 @@ fn main() {
                 udp_server::serve(address).unwrap_or_else(|e| error!("{}", e));
             }
             "client" => {
-                // TODO: call udp client
+                udp_client::communicate(address).unwrap_or_else(|e| error!("{}", e));
             }
             _ => {
                 missing_role();
