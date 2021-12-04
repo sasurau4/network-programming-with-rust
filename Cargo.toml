@@ -2,4 +2,5 @@
 
 members = [
 	"socket-programming",
+	"packet-capture",
 ]
