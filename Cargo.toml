@@ -5,4 +5,5 @@ members = [
 	"packet-capture",
 	"port-scanner",
 	"webserver",
+	"dhcp_server",
 ]
