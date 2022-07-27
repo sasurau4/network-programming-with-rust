@@ -17,6 +17,9 @@ const CHADDR: usize = 28;
 const SNAME: usize = 44;
 // const FILE: usize = 108;
 pub const OPTIONS: usize = 236;
+// Field only
+const DHCP_MINIMUM_SIZE: usize = 237;
+const OPTION_END: u8 = 255;
 pub struct DhcpServer {
     buffer: Vec<u8>,
 }
@@ -42,5 +45,25 @@ impl DhcpServer {
         let t = chaddr.to_primitive_values();
         let macaddr_value = [t.0, t.1, t.2, t.3, t.4, t.5];
         self.buffer[CHADDR..CHADDR + 6].copy_from_slice(&macaddr_value);
+    }
+
+    pub fn set_option(
+        &mut self,
+        cursor: &mut usize,
+        code: u8,
+        len: usize,
+        contents: Option<&[u8]>,
+    ) {
+        self.buffer[*cursor] = code;
+        if code == OPTION_END {
+            return;
+        }
+        *cursor += 1;
+        self.buffer[*cursor] = len as u8;
+        *cursor += 1;
+        if let Some(contents) = contents {
+            self.buffer[*cursor..*cursor + contents.len()].copy_from_slice(contents);
+        }
+        *cursor += len;
     }
 }

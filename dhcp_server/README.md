@@ -14,3 +14,7 @@ CREATE TABLE "lease_entries" (
 	"deleted" unsigned INTEGER NOT NULL DEFAULT 0
 );
 ```
+
+### Memo
+
+https://github.com/teru01/dhcp_server
